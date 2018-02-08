@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SeachAlgorithms.Searches
 {
-    class BinarySearch<T> where T : IComparable
+    public class BinarySearch<T> : ISearcher<T> where T : IComparable
     {
         #region Properties
         private T[] _data;

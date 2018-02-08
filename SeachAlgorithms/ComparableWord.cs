@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SeachAlgorithms
 {
-    class ComparableWord : IComparable 
+    public class ComparableWord : IComparable 
     {
         public string Value;
 
@@ -15,7 +15,7 @@ namespace SeachAlgorithms
 
         public int CompareTo(object obj)
         {
-            return this.Value.CompareTo(obj.ToString());
+            return string.Compare(this.Value.ToLower(), obj.ToString().ToLower());
         }
 
         public override string ToString()
