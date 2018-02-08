@@ -46,6 +46,8 @@ namespace SeachAlgorithms
             var client = new WebClient();
             var words = client.DownloadString("https://raw.githubusercontent.com/dwyl/english-words/master/words.txt").Split("\n");
             var comparableWords = words.Select(n => new ComparableWord(n));
+            var sorter = new Sorting.MergeSort<ComparableWord>();
+            sorter.Sort(comparableWords.ToList());
             var binarySearch = new BinarySearch<ComparableWord>(comparableWords);
             var linearSearch = new LinearSearch<ComparableWord>(comparableWords);
 
