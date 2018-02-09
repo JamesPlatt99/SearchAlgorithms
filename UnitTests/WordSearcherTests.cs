@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SeachAlgorithms;
 using SeachAlgorithms.Searches;
+using System.IO;
 using System.Linq;
 using System.Net;
 
@@ -19,10 +20,12 @@ namespace UnitTests
             comparableWords = sorter.Sort(comparableWords.ToList());
             var binarySearch = new BinarySearch<ComparableWord>(comparableWords);
 
-            Assert.IsTrue(binarySearch.ExistsInData(new ComparableWord("overnumerousness")));
-            Assert.IsTrue(binarySearch.ExistsInData(new ComparableWord("overnuMeroUsness")));
+            string whatDoYouCallNegativeOneSittingAloneInACorner = "overnumerousness";
+            //That is a word and the joke does make sense
+            Assert.IsTrue(binarySearch.ExistsInData(new ComparableWord(whatDoYouCallNegativeOneSittingAloneInACorner)));
             Assert.IsTrue(binarySearch.ExistsInData(new ComparableWord("ZZZ")));
             Assert.IsTrue(binarySearch.ExistsInData(new ComparableWord("alphabet")));
+            Assert.IsTrue(binarySearch.ExistsInData(new ComparableWord("aLPHabeT")));
             Assert.IsTrue(binarySearch.ExistsInData(new ComparableWord("2")));
             Assert.IsTrue(binarySearch.ExistsInData(new ComparableWord("ace")));
             Assert.IsFalse(binarySearch.ExistsInData(new ComparableWord("ZassadfsdfZZ")));

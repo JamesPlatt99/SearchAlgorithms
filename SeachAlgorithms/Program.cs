@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using SeachAlgorithms.Searches;
+using SeachAlgorithms.SodokuSolver;
 using System.Diagnostics;
 
 namespace SeachAlgorithms
@@ -21,6 +22,7 @@ namespace SeachAlgorithms
                     SearchWordList();
                     break;
                 case 2:
+                    SolveSodoku();
                     break;
             }
             Console.ReadLine();
@@ -35,6 +37,14 @@ namespace SeachAlgorithms
             Console.WriteLine("   2. Sodoku Solver");
             Console.WriteLine("");
             Console.Write(" :");
+        }
+
+        static void SolveSodoku()
+        {
+            var sodoku = new Sodoku("sodoku.txt");
+            var solver = new Solver(sodoku);
+            solver.Solve();
+            Console.WriteLine("Done");
         }
 
         static void SearchWordList()
