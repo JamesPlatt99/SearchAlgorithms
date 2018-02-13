@@ -20,13 +20,13 @@ namespace SeachAlgorithms.SodokuSolver
             Row = row;
             Col = col;
         }
-        public Stack<int> PotentialValues;
+        public Queue<int> PotentialValues;
 
         public void CalculatePossibilities(Sodoku sodoku)
         {
             if (!sodoku.Grid[this.Row, this.Col].CanChange)
             {
-                PotentialValues =  new Stack<int>(sodoku.Grid[this.Row, this.Col].Value);
+                PotentialValues =  new Queue<int>(sodoku.Grid[this.Row, this.Col].Value);
             }
             List<int> possibilities = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9 }.Where(n=> !FailedValues.Contains(n)).ToList();
 
@@ -35,7 +35,7 @@ namespace SeachAlgorithms.SodokuSolver
             {
                 for(int j = 0; j < 3; j++)
                 {
-                    if (possibilities.Contains(sodoku.Grid[(this.Row / 3) * 3 + i, (this.Col / 3) * 3 + j].Value) && ((this.Row / 3) * 3 + i != this.Row) && ((this.Col / 3) * 3 + j != this.Col))
+                    if (possibilities.Contains(sodoku.Grid[(this.Row / 3) * 3 + i, (this.Col / 3) * 3 + j].Value) && sodoku.Grid[(this.Row / 3) * 3 + i, (this.Col / 3) * 3 + j] != this)
                     {
                         possibilities.Remove(sodoku.Grid[(this.Row / 3) * 3 + i, (this.Col / 3) * 3 + j].Value);
                     }
@@ -45,17 +45,31 @@ namespace SeachAlgorithms.SodokuSolver
             //Validate row and column
             for (int i = 0; i < 9; i++)
             {
-                if (possibilities.Contains(sodoku.Grid[this.Row, i].Value) && (i != this.Row))
+                if (possibilities.Contains(sodoku.Grid[this.Row, i].Value) && (i != this.Col))
                 {
                     possibilities.Remove(sodoku.Grid[this.Row, i].Value);
                 }
-                if (possibilities.Contains(sodoku.Grid[i, this.Col].Value) && (i != this.Col))
+                if (possibilities.Contains(sodoku.Grid[i, this.Col].Value) && (i != this.Row))
                 {
                     possibilities.Remove(sodoku.Grid[i, this.Col].Value);
                 }
             }
 
-            PotentialValues = new Stack<int>(possibilities);
+            PotentialValues = new Queue<int>(possibilities);
+        }
+
+        public override string ToString()
+        {
+            return this.Value.ToString();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(obj.GetType() == this.GetType())
+            {
+                return (((Node)obj).Row == this.Row && ((Node)obj).Col == this.Col);
+            }
+            return false;
         }
     }
 }

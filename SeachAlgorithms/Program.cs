@@ -4,29 +4,44 @@ using System.Net;
 using SeachAlgorithms.Searches;
 using SeachAlgorithms.SodokuSolver;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace SeachAlgorithms
 {
     public class Program
     {
+        private static List<ComparableWord> _sortedWords;
         static void Main(string[] args)
         {
-            DisplayMenu();
-            int choice = 0;
-            while(!int.TryParse(Console.ReadLine(), out choice)){
-                DisplayMenu();
-            }
-            switch (choice)
+            while (true)
             {
-                case 1:
-                    SearchWordList();
-                    break;
-                case 2:
-                    SolveSodoku();
-                    break;
+                DisplayMenu();
+                int choice = 0;
+                while (!int.TryParse(Console.ReadLine(), out choice)) {
+                    DisplayMenu();
+                }
+                switch (choice)
+                {
+                    case 1:
+                        SearchWordList();
+                        break;
+                    case 2:
+                        SolveSodoku();
+                        break;
+                }
+                Console.ReadLine();
             }
-            Console.ReadLine();
 
+        }
+
+        static List<ComparableWord> SortWords()
+        {
+            Console.WriteLine("Sorting words...");
+            var client = new WebClient();
+            var words = client.DownloadString("https://raw.githubusercontent.com/dwyl/english-words/master/words.txt").Split("\n");
+            var comparableWords = words.Select(n => new ComparableWord(n));
+            var sorter = new Sorting.MergeSort<ComparableWord>();
+            return sorter.Sort(comparableWords.ToList());
         }
 
         static void DisplayMenu()
@@ -43,21 +58,22 @@ namespace SeachAlgorithms
         {
             var sodoku = new Sodoku("sodoku.txt");
             var solver = new Solver(sodoku);
+            var stopwatch = new Stopwatch();
+
+            stopwatch.Start();
             solver.Solve();
-            Console.WriteLine("Done");
+            stopwatch.Stop();
+            Console.WriteLine(sodoku.Validate());
+            Console.WriteLine("Done in: {0}",stopwatch.Elapsed);
         }
 
         static void SearchWordList()
         {
+            List<ComparableWord> comparableWords = _sortedWords ?? (_sortedWords = SortWords());
             Console.WriteLine();
             Console.Write("Word to search for: ");
             string word = Console.ReadLine();
 
-            var client = new WebClient();
-            var words = client.DownloadString("https://raw.githubusercontent.com/dwyl/english-words/master/words.txt").Split("\n");
-            var comparableWords = words.Select(n => new ComparableWord(n));
-            var sorter = new Sorting.MergeSort<ComparableWord>();
-            sorter.Sort(comparableWords.ToList());
             var binarySearch = new BinarySearch<ComparableWord>(comparableWords);
             var linearSearch = new LinearSearch<ComparableWord>(comparableWords);
 
