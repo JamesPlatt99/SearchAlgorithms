@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SeachAlgorithms.SodokuSolver
 {
-    class Sodoku
+    public class Sodoku
     {
         public Node[,] Grid = new Node[9, 9];
 

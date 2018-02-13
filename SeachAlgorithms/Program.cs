@@ -56,7 +56,8 @@ namespace SeachAlgorithms
 
         static void SolveSodoku()
         {
-            var sodoku = new Sodoku("sodoku.txt");
+            Console.Write("Please enter filename: ");
+            var sodoku = new Sodoku(Console.ReadLine());
             var solver = new Solver(sodoku);
             var stopwatch = new Stopwatch();
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SeachAlgorithms.SodokuSolver
 {
-    class Solver
+    public class Solver
     {
         Sodoku _sodoku;
         Stack<Node> _visitedNodes = new Stack<Node>();
@@ -42,10 +42,10 @@ namespace SeachAlgorithms.SodokuSolver
                     }
                     _curNode.Value = _curNode.PotentialValues.Peek();
                     _sodoku.Grid[i, j] = _curNode;
-                    DisplaySodoku();
                 }
             }
 
+            DisplaySodoku();
             return _sodoku;
         }
 

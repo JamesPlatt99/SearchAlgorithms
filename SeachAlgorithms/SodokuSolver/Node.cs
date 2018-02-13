@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SeachAlgorithms.SodokuSolver
 {
-    class Node
+    public class Node
     {
         public int Value;
         public bool CanChange;
