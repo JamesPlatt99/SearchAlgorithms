@@ -20,9 +20,9 @@ namespace UnitTests
             comparableWords = sorter.Sort(comparableWords.ToList());
             var binarySearch = new BinarySearch<ComparableWord>(comparableWords);
 
-            string whatDoYouCallNegativeOneSittingAloneInACorner = "overnumerousness";
+            string whatDoYouCallNegativeOneSittingAloneInAnEmptyRoom = "overnumerousness";
             //That is a word and the joke does make sense
-            Assert.IsTrue(binarySearch.ExistsInData(new ComparableWord(whatDoYouCallNegativeOneSittingAloneInACorner)));
+            Assert.IsTrue(binarySearch.ExistsInData(new ComparableWord(whatDoYouCallNegativeOneSittingAloneInAnEmptyRoom)));
             Assert.IsTrue(binarySearch.ExistsInData(new ComparableWord("ZZZ")));
             Assert.IsTrue(binarySearch.ExistsInData(new ComparableWord("alphabet")));
             Assert.IsTrue(binarySearch.ExistsInData(new ComparableWord("aLPHabeT")));
