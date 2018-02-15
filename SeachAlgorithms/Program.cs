@@ -10,7 +10,8 @@ namespace SeachAlgorithms
 {
     public class Program
     {
-        private static List<ComparableWord> _sortedWords;
+        private static List<ComparableWord> _sortedWordsAll;
+        private static List<ComparableWord> _sortedWordsCommon;
         static void Main(string[] args)
         {
             while (true)
@@ -34,11 +35,9 @@ namespace SeachAlgorithms
 
         }
 
-        static List<ComparableWord> SortWords()
+        static List<ComparableWord> SortWords(IEnumerable<String> words)
         {
             Console.WriteLine("Sorting words...");
-            var client = new WebClient();
-            var words = client.DownloadString("https://raw.githubusercontent.com/dwyl/english-words/master/words.txt").Split("\n");
             var comparableWords = words.Select(n => new ComparableWord(n));
             var sorter = new Sorting.MergeSort<ComparableWord>();
             return sorter.Sort(comparableWords.ToList());
@@ -58,7 +57,7 @@ namespace SeachAlgorithms
         {
             Console.Write("Please enter filename: ");
             var sodoku = new Sodoku(Console.ReadLine());
-            var solver = new Solver(sodoku);
+            var solver = GetSolver(sodoku);
             var stopwatch = new Stopwatch();
 
             stopwatch.Start();
@@ -68,18 +67,45 @@ namespace SeachAlgorithms
             Console.WriteLine("Done in: {0}",stopwatch.Elapsed);
         }
 
+        static DepthFirstSolver GetSolver(Sodoku sodoku)
+        {
+            Console.WriteLine("  1. Depth first");
+            Console.WriteLine("  2. Breadth first");
+            Console.Write("  :");
+            switch (Console.ReadLine())
+            {
+                case "1":
+                    return new DepthFirstSolver(sodoku);
+                case "2":
+                    return new BreadthFirstSolver(sodoku);
+                default:
+                    return GetSolver(sodoku);
+            }
+        }
+
         static void SearchWordList()
         {
-            List<ComparableWord> comparableWords = _sortedWords ?? (_sortedWords = SortWords());
+            var client = new WebClient();
+            var allWords = client.DownloadString("https://raw.githubusercontent.com/dwyl/english-words/master/words.txt").Split("\n");
+            var commonWords = client.DownloadString("https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english-usa-no-swears-short.txt").Split("\n");
+
+            List<ComparableWord> AllWords = _sortedWordsAll ?? (_sortedWordsAll = SortWords(allWords));
+            List<ComparableWord> CommonWords = _sortedWordsCommon ?? (_sortedWordsCommon = SortWords(commonWords));
             Console.WriteLine();
             Console.Write("Word to search for: ");
             string word = Console.ReadLine();
 
-            var binarySearch = new BinarySearch<ComparableWord>(comparableWords);
-            var linearSearch = new LinearSearch<ComparableWord>(comparableWords);
+            var binarySearchAll = new BinarySearch<ComparableWord>(AllWords);
+            var linearSearchAll = new LinearSearch<ComparableWord>(AllWords);
 
-            SearchWordList(word, binarySearch);
-            SearchWordList(word, linearSearch);
+            var binarySearchCommon = new BinarySearch<ComparableWord>(CommonWords);
+            var linearSearchCommon = new LinearSearch<ComparableWord>(CommonWords);
+
+            SearchWordList(word, binarySearchAll);
+            SearchWordList(word, linearSearchAll);
+
+            SearchWordList(word, binarySearchCommon);
+            SearchWordList(word, linearSearchCommon);
         }
 
         static void SearchWordList(string word, Searches.ISearcher<ComparableWord> searcher)

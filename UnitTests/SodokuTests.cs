@@ -15,7 +15,17 @@ namespace UnitTests
         public void Test1()
         {
             var sodoku = new Sodoku("sodoku.txt");
-            var solver = new Solver(sodoku);            
+            var solver = new DepthFirstSolver(sodoku);            
+            solver.Solve();
+            Assert.IsTrue(sodoku.Validate());
+
+            sodoku = new Sodoku("1.txt");
+            solver = new DepthFirstSolver(sodoku);
+            solver.Solve();
+            Assert.IsTrue(sodoku.Validate());
+
+            sodoku = new Sodoku("2.txt");
+            solver = new DepthFirstSolver(sodoku);
             solver.Solve();
             Assert.IsTrue(sodoku.Validate());
         } 
