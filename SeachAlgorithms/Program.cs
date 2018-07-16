@@ -57,7 +57,7 @@ namespace SeachAlgorithms
         {
             Console.Write("Please enter filename: ");
             var sodoku = new Sodoku(Console.ReadLine());
-            var solver = GetSolver(sodoku);
+            var solver = SodokuSolverFactory.GetSodokuSolver(sodoku);
             var stopwatch = new Stopwatch();
 
             stopwatch.Start();
@@ -65,22 +65,6 @@ namespace SeachAlgorithms
             stopwatch.Stop();
             Console.WriteLine(sodoku.Validate());
             Console.WriteLine("Done in: {0}",stopwatch.Elapsed);
-        }
-
-        static DepthFirstSolver GetSolver(Sodoku sodoku)
-        {
-            Console.WriteLine("  1. Depth first");
-            Console.WriteLine("  2. Breadth first");
-            Console.Write("  :");
-            switch (Console.ReadLine())
-            {
-                case "1":
-                    return new DepthFirstSolver(sodoku);
-                case "2":
-                    return new BreadthFirstSolver(sodoku);
-                default:
-                    return GetSolver(sodoku);
-            }
         }
 
         static void SearchWordList()

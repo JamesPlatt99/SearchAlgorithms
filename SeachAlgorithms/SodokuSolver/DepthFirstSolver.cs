@@ -4,18 +4,18 @@ using System.Text;
 
 namespace SeachAlgorithms.SodokuSolver
 {
-    public class DepthFirstSolver
+    public class DepthFirstSolver : BaseSodokuSolver
     {
-        protected Sodoku _sodoku;
-        protected Node _curNode;
         private Stack<Node> _visitedNodes = new Stack<Node>();
+
+        #region Public Methods
 
         public DepthFirstSolver(Sodoku sodoku)
         {
             _sodoku = sodoku;
         }
 
-        public Sodoku Solve()
+        public override Sodoku Solve()
         {
             bool failed;
             for (int i = 0; i < 9; i++)
@@ -45,44 +45,24 @@ namespace SeachAlgorithms.SodokuSolver
             DisplaySodoku();
             return _sodoku;
         }
-        #region Helper Methods
 
-        protected void DisplaySodoku()
-        {
-            for (int i = 0; i < 9; i++)
-            {
-                for (int j = 0; j < 9; j++)
-                {
-                    Console.Write(_sodoku.Grid[i, j]?.Value ?? 0);
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine();
-        }
         #endregion
 
-        #region Virtual methods
-        protected virtual void RevertNode()
-        {
-            RemoveVisitedNode();
-            _curNode.FailedValues = new List<int>();
-            _curNode = _visitedNodes.Peek();
-            if (!_curNode.CanChange)
-            {
-                RevertNode();
-            }
-            _curNode.FailedValues.Add(_curNode.Value);
-            _curNode.CalculatePossibilities(_sodoku);
-        }
+        #region Overrides
 
-        protected virtual void AddVisitedNode()
+        protected override void AddVisitedNode()
         {
             _visitedNodes.Push(_curNode);
         }
 
-        protected virtual void RemoveVisitedNode()
+        protected override void RemoveVisitedNode()
         {
             _visitedNodes.Pop();
+        }
+
+        protected override Node GetPreviousNode()
+        {
+            return _visitedNodes.Peek();
         }
 
         #endregion
