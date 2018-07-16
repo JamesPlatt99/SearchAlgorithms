@@ -11,12 +11,25 @@ namespace SeachAlgorithms.SodokuSolver
         private ICollection<Node> _visitedNodes;
 
 
-        public abstract Sodoku Solve();
         protected abstract void AddVisitedNode();
         protected abstract void RemoveVisitedNode();
+        protected abstract Position ProcessNode(Position curPos);
         protected abstract Node GetPreviousNode(); 
 
 
+        public Sodoku Solve()
+        {
+            var curPos = new Position();
+            for (curPos.col = 0; curPos.col < 9; curPos.col++)
+            {
+                for (curPos.row = 0; curPos.row < 9; curPos.row++)
+                {
+                    curPos = ProcessNode(curPos);
+                }
+            }
+            DisplaySodoku();
+            return _sodoku;
+        }
         protected void DisplaySodoku()
         {
             for (int i = 0; i < 9; i++)

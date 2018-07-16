@@ -15,36 +15,9 @@ namespace SeachAlgorithms.SodokuSolver
             _sodoku = sodoku;
         }
 
-        public override Sodoku Solve()
-        {
-            var curPos = new Position();
-            for (curPos.col = 0; curPos.col < 9; curPos.col++)
-            {
-                for (curPos.row = 0; curPos.row < 9; curPos.row++)
-                {
-                    curPos = ProcessNode(curPos);
-                }
-            }
-            DisplaySodoku();
-            return _sodoku;
-        }
-
         #endregion
 
         #region Helper Methods
-        private Position ProcessNode(Position curPos)
-        {
-            _curNode = _sodoku.Grid[curPos.row, curPos.col];
-            _curNode.CalculatePossibilities(_sodoku);
-            AddVisitedNode();
-            while (_curNode.PotentialValues.Count == 0)
-            {
-                curPos = ResetAndRevertNode(curPos);
-            }
-            _curNode.Value = _curNode.PotentialValues.Peek();
-            _sodoku.Grid[curPos.row, curPos.col] = _curNode;
-            return curPos;
-        }
 
         private Position ResetAndRevertNode(Position curPos)
         {
@@ -63,6 +36,19 @@ namespace SeachAlgorithms.SodokuSolver
         #endregion
 
         #region Overrides
+        protected override Position ProcessNode(Position curPos)
+        {
+            _curNode = _sodoku.Grid[curPos.row, curPos.col];
+            _curNode.CalculatePossibilities(_sodoku);
+            AddVisitedNode();
+            while (_curNode.PotentialValues.Count == 0)
+            {
+                curPos = ResetAndRevertNode(curPos);
+            }
+            _curNode.Value = _curNode.PotentialValues.Peek();
+            _sodoku.Grid[curPos.row, curPos.col] = _curNode;
+            return curPos;
+        }
 
         protected override void AddVisitedNode()
         {
