@@ -37,9 +37,9 @@ namespace UnitTests
             var solvedSodoku = new Sodoku("sodoku.txt");
             var solver = new DepthFirstSolver(solvedSodoku);
             solver.Solve();
-            for(int x = 0; x < solvedSodoku.Grid.Length; x++)
+            for(int x = 0; x < 9; x++)
             {
-                for (int y = 0; y < solvedSodoku.Grid.Length; y++)
+                for (int y = 0; y < 9; y++)
                 {
                     if(orgSodoku.Grid[x,y].Value != 0)
                     {
