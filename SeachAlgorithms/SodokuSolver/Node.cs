@@ -26,7 +26,7 @@ namespace SeachAlgorithms.SodokuSolver
         {
             if (!sodoku.Grid[this.Row, this.Col].CanChange)
             {
-                PotentialValues = new Queue<int>(sodoku.Grid[this.Row, this.Col].Value);
+                PotentialValues = new Queue<int>(new[] { sodoku.Grid[this.Row, this.Col].Value });
             }
             else
             {

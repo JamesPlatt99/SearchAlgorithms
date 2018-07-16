@@ -18,16 +18,15 @@ namespace SeachAlgorithms.SodokuSolver
         public Sodoku Solve()
         {
             bool failed;
-            for (int i = 0; i <9; i++)
+            for (int i = 0; i < 9; i++)
             {
-                for(int j = 0; j < 9; j++)
+                for (int j = 0; j < 9; j++)
                 {
                     failed = false;
-                    _curNode = _sodoku.Grid[i, j];                    
+                    _curNode = _sodoku.Grid[i, j];
                     _curNode.CalculatePossibilities(_sodoku);
                     AddVisitedNode();
-                    
-                    while(_curNode.PotentialValues.Count == 0)
+                    while (_curNode.PotentialValues.Count == 0)
                     {
                         _curNode.Value = 0;
                         RevertNode();
@@ -37,26 +36,24 @@ namespace SeachAlgorithms.SodokuSolver
                     {
                         _curNode.FailedValues.Add(_curNode.Value);
                         i = _curNode.Row;
-                        j = _curNode.Col; 
-
+                        j = _curNode.Col;
                     }
                     _curNode.Value = _curNode.PotentialValues.Peek();
                     _sodoku.Grid[i, j] = _curNode;
                 }
             }
-
             DisplaySodoku();
             return _sodoku;
         }
         #region Helper Methods
-        
+
         protected void DisplaySodoku()
         {
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    Console.Write(_sodoku.Grid[i,j]?.Value ?? 0);
+                    Console.Write(_sodoku.Grid[i, j]?.Value ?? 0);
                 }
                 Console.WriteLine();
             }
@@ -70,6 +67,10 @@ namespace SeachAlgorithms.SodokuSolver
             RemoveVisitedNode();
             _curNode.FailedValues = new List<int>();
             _curNode = _visitedNodes.Peek();
+            if (!_curNode.CanChange)
+            {
+                RevertNode();
+            }
             _curNode.FailedValues.Add(_curNode.Value);
             _curNode.CalculatePossibilities(_sodoku);
         }
