@@ -10,6 +10,11 @@ namespace SeachAlgorithms.SodokuSolver
         protected Node _curNode;
         private ICollection<Node> _visitedNodes;
 
+        public BaseSodokuSolver(Sodoku sodoku)
+        {
+            _sodoku = sodoku;
+        }
+
 
         protected abstract void AddVisitedNode();
         protected abstract void RemoveVisitedNode();

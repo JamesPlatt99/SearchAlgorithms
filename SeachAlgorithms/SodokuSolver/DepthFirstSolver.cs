@@ -8,14 +8,8 @@ namespace SeachAlgorithms.SodokuSolver
     {
         private Stack<Node> _visitedNodes = new Stack<Node>();
 
-        #region Public Methods
+        public DepthFirstSolver(Sodoku sodoku) : base(sodoku) { }
 
-        public DepthFirstSolver(Sodoku sodoku)
-        {
-            _sodoku = sodoku;
-        }
-
-        #endregion
 
         #region Helper Methods
 

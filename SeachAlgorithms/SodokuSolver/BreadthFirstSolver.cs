@@ -9,12 +9,7 @@ namespace SeachAlgorithms.SodokuSolver
         
         private Queue<Node> _visitedNodes = new Queue<Node>();
 
-        #region Public Methods
-        public BreadthFirstSolver(Sodoku sodoku)
-        {
-            this._sodoku = sodoku;
-        }
-        #endregion
+        public BreadthFirstSolver(Sodoku sodoku) : base(sodoku) { }
 
         #region Helper Methods
         #endregion
