@@ -12,7 +12,7 @@ namespace UnitTests
     public class SodokuTests
     {
         [TestMethod]
-        public void Test1()
+        public void ValidateRules()
         {
             var sodoku = new Sodoku("sodoku.txt");
             var solver = new DepthFirstSolver(sodoku);            
@@ -28,6 +28,25 @@ namespace UnitTests
             solver = new DepthFirstSolver(sodoku);
             solver.Solve();
             Assert.IsTrue(sodoku.Validate());
-        } 
+        }
+
+        [TestMethod]
+        public void ValidateOriginalPositions()
+        {
+            var orgSodoku = new Sodoku("sodoku.txt");
+            var solvedSodoku = new Sodoku("sodoku.txt");
+            var solver = new DepthFirstSolver(solvedSodoku);
+            solver.Solve();
+            for(int x = 0; x < solvedSodoku.Grid.Length; x++)
+            {
+                for (int y = 0; y < solvedSodoku.Grid.Length; y++)
+                {
+                    if(orgSodoku.Grid[x,y].Value != 0)
+                    {
+                        Assert.AreEqual(orgSodoku.Grid[x, y].Value, solvedSodoku.Grid[x, y].Value);
+                    }
+                }
+            }
+        }
     }
 }
