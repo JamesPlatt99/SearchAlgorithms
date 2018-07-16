@@ -32,6 +32,7 @@ namespace SeachAlgorithms.SodokuSolver
 
         protected void RevertNode()
         {
+            if (_curNode.CanChange) { _curNode.Value = 0; }
             RemoveVisitedNode();
             _curNode.FailedValues = new List<int>();
             _curNode = GetPreviousNode();

@@ -17,35 +17,49 @@ namespace SeachAlgorithms.SodokuSolver
 
         public override Sodoku Solve()
         {
-            bool failed;
-            for (int i = 0; i < 9; i++)
+            var curPos = new Position();
+            for (curPos.col = 0; curPos.col < 9; curPos.col++)
             {
-                for (int j = 0; j < 9; j++)
+                for (curPos.row = 0; curPos.row < 9; curPos.row++)
                 {
-                    failed = false;
-                    _curNode = _sodoku.Grid[i, j];
-                    _curNode.CalculatePossibilities(_sodoku);
-                    AddVisitedNode();
-                    while (_curNode.PotentialValues.Count == 0)
-                    {
-                        _curNode.Value = 0;
-                        RevertNode();
-                        failed = true;
-                    }
-                    if (failed)
-                    {
-                        _curNode.FailedValues.Add(_curNode.Value);
-                        i = _curNode.Row;
-                        j = _curNode.Col;
-                    }
-                    _curNode.Value = _curNode.PotentialValues.Peek();
-                    _sodoku.Grid[i, j] = _curNode;
+                    curPos = ProcessNode(curPos);
                 }
             }
             DisplaySodoku();
             return _sodoku;
         }
 
+        #endregion
+
+        #region Helper Methods
+        private Position ProcessNode(Position curPos)
+        {
+            _curNode = _sodoku.Grid[curPos.row, curPos.col];
+            _curNode.CalculatePossibilities(_sodoku);
+            AddVisitedNode();
+            while (_curNode.PotentialValues.Count == 0)
+            {
+                curPos = ResetAndRevertNode(curPos);
+            }
+            _curNode.Value = _curNode.PotentialValues.Peek();
+            _sodoku.Grid[curPos.row, curPos.col] = _curNode;
+            return curPos;
+        }
+
+        private Position ResetAndRevertNode(Position curPos)
+        {
+            RevertNode();
+            ResetCurPos(curPos);
+            return curPos;
+        }
+
+        private Position ResetCurPos(Position curPos)
+        {
+            _curNode.FailedValues.Add(_curNode.Value);
+            curPos.row = _curNode.Row;
+            curPos.col = _curNode.Col;
+            return curPos;
+        }
         #endregion
 
         #region Overrides
